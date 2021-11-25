@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "@typescript-eslint/naming-convention": "off",
+    "unicorn/no-array-reduce": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "import/no-anonymous-default-export": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "unicorn/prefer-object-from-entries": "off",
+    "no-negated-condition": "off"
+  }
+}

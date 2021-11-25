@@ -1,12 +1,18 @@
-## trymodule [![Circle CI](https://circleci.com/gh/VictorBjelkholm/trymodule/tree/master.svg?style=svg)](https://circleci.com/gh/VictorBjelkholm/trymodule/tree/master)
+## trymodule
 
 A simple cli tool for trying out different nodejs modules.
 
 ![trymodule demo](preview.gif)
 
+- Works well with Node 16 and higher versions.
+
+- Support ESM Module.
+
+- Built with ESM and typescript
+
 ## Installation
 
-`npm install -g trymodule`
+`npm install -g @jopemachine/trymodule`
 
 ## Usage
 
