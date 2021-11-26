@@ -6,6 +6,7 @@ import vm from 'node:vm';
 import {exec} from 'node:child_process';
 import process from 'node:process';
 import chalk from 'chalk';
+import logSymbol from 'log-symbols';
 import replHistory from './repl-history.js';
 import loadPackages from './index.js';
 import type {PackageInfo} from './index.js';
@@ -35,7 +36,7 @@ for (const arg of process.argv.slice(2)) {
 }
 
 if (flags.length === 0 && Object.keys(packages).length === 0) {
-	throw new Error('You need to provide some arguments!');
+	throw new Error(`${logSymbol.error} You need to provide some arguments!`);
 }
 
 const logGreen = (message: string) => {
@@ -45,33 +46,34 @@ const logGreen = (message: string) => {
 const hasFlag = (flag: string) => flags.includes(flag);
 
 const addPackageToObject = (object: Record<string, any>, pkg: PackageInfo) => {
-	logGreen(`Package '${pkg.name}' was loaded and assigned to '${pkg.as}' in the current scope`);
+	logGreen(`${logSymbol.info} Package '${pkg.name}' was loaded and assigned to '${pkg.as}' in the current scope`);
 	object[pkg.as] = pkg.package;
 	return object;
 };
 
 if (hasFlag('--clear')) {
-	console.log(`Removing folder ${TRYMODULE_PATH + '/node_modules'}`);
+	console.log(`${logSymbol.info} Removing folder ${TRYMODULE_PATH + '/node_modules'}`);
 	exec('rm -r ' + TRYMODULE_PATH + '/node_modules', (error, _stdout, _stderr) => {
 		if (!error) {
-			logGreen('Cache successfully cleared!');
+			logGreen(`${logSymbol.info} Cache successfully cleared!`);
 			process.exit(0);
 		} else {
-			throw new Error(`Could not remove cache! Error ${error.message}`);
+			throw new Error(`${logSymbol.error} Could not remove cache! Error ${error.message}`);
 		}
 	});
 } else {
-	logGreen('Gonna start a REPL with packages installed and loaded for you');
+	logGreen(`${logSymbol.info} Gonna start a REPL with packages installed and loaded for you`);
 
 	// Extract
 	loadPackages(packages, TRYMODULE_PATH).then(packages => {
 		const contextPackages = packages.reduce((context, pkg) => addPackageToObject(context, pkg), {});
 
-		console.log('REPL started...');
+		console.log(`${logSymbol.info} REPL started...`);
 
 		if (!process.env['TRYMODULE_NONINTERACTIVE']) {
 			const replServer = repl.start({
 				prompt: '> ',
+				useColors: true,
 				eval: (cmd: string, _context, _filename, callback) => {
 					const script = new vm.Script(cmd);
 					const result = script.runInContext(Object.assign(replServer.context, contextPackages));
@@ -80,7 +82,7 @@ if (hasFlag('--clear')) {
 					// (ie lib$es6$promise$promise$$Promise)
 
 					if (result instanceof Promise || (typeof result === 'object' && typeof result.then === 'function')) {
-						console.log('Returned a Promise. waiting for result...');
+						console.log(`${logSymbol.info} Returned a Promise. waiting for result...`);
 
 						result
 							.then((value: any) => {
