@@ -6,7 +6,7 @@ A simple cli tool for trying out different nodejs modules.
 
 - Works well with Node 16 and higher versions.
 
-- Support ESM Module.
+- Support ES Module.
 
 - Built with ESM and typescript
 
