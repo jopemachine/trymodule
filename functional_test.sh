@@ -1,6 +1,6 @@
 #! /bin/sh
 
-TEST_PATH=./tmp_testfolder
+TEST_PATH=./dist/tmp_testfolder
 FAILED=0
 
 export TRYMODULE_PATH=$TEST_PATH
@@ -18,7 +18,7 @@ run_test_command()
   echo "--------------"
   echo "## $1"
   echo "## $2 ?= $3"
-  x=$(echo "$2" | ./cli.js colors | grep "$3")
+  x=$(echo "$2" | ./dist/cli.js colors | grep "$3")
   [ "${x}" != "$3" ]
 }
 
@@ -41,23 +41,23 @@ check_should_error()
 }
 
 # Install one package
-run_test "Can install package 'colors'" "./cli.js colors"
+run_test "Can install package 'colors'" "./dist/cli.js colors"
 test -d $TEST_PATH/node_modules/colors
 check_failure "node_modules/colors was not installed"
 
 # Install two packages
-run_test "Can install packages 'colors' & 'lodash'" "./cli.js colors lodash"
+run_test "Can install packages 'colors' & 'lodash'" "./dist/cli.js colors lodash"
 test -d $TEST_PATH/node_modules/colors
 check_failure "node_modules/colors was not installed"
 test -d $TEST_PATH/node_modules/lodash
 check_failure "node_modules/lodash was not installed"
 
 # Install two packages and bind to custom variable names
-run_test "Can install packages 'colors' & 'lodash' as 'c' and '_'" "./cli.js colors=c lodash=_"
+run_test "Can install packages 'colors' & 'lodash' as 'c' and '_'" "./dist/cli.js colors=c lodash=_"
 check_failure "Could not assign to custom variable names"
 
 # Can't install packages that doesn't exists
-run_test "Cannot install missing package 'coloursssss'" "./cli.js coloursssss"
+run_test "Cannot install missing package 'coloursssss'" "./dist/cli.js coloursssss"
 test -d $TEST_PATH/node_modules/coloursssss
 check_should_error "node_modules/coloursssss was installed"
 echo "NOTE: Above error is normal and is fine, we're testing that we cannot install missing packages"
@@ -83,7 +83,7 @@ check_failure "Did not output the result of a Promise"
 
 
 # Clear cache
-run_test "Can clear the cache" "./cli.js --clear"
+run_test "Can clear the cache" "./dist/cli.js --clear"
 test -d $TEST_PATH/node_modules
 check_should_error "node_modules existed!"
 
