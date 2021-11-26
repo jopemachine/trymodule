@@ -50,7 +50,8 @@ const loadPackage = (moduleName: string, moduleAs: string, installPath: string):
 		reject: false,
 	});
 
-	const exports = JSON.parse(stdout).exports ?? JSON.parse(stdout).main ?? 'index.js';
+	const pkgInfo = JSON.parse(stdout);
+	const exports = pkgInfo.exports ?? pkgInfo.main ?? 'index.js';
 	const exportedFilePath = exportedFileLocation(pkgLocation, exports);
 
 	import(exportedFilePath).then(loadedPackage => {

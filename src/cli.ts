@@ -73,7 +73,8 @@ if (hasFlag('--clear')) {
 		if (!process.env['TRYMODULE_NONINTERACTIVE']) {
 			const replServer = repl.start({
 				prompt: '> ',
-				useColors: true,
+				replMode: repl.REPL_MODE_SLOPPY,
+				preview: true,
 				eval: (cmd: string, _context, _filename, callback) => {
 					const script = new vm.Script(cmd);
 					const result = script.runInContext(Object.assign(replServer.context, contextPackages));
