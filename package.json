@@ -7,7 +7,7 @@
     "jopemachine"
   ],
   "scripts": {
-    "test": "npm run lint && ./functional_test.sh",
+    "test": "./functional_test.sh",
     "lint": "xo --fix",
     "build": "tsc"
   },

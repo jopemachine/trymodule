@@ -1,5 +1,7 @@
 ## trymodule
 
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+
 A simple cli tool for trying out different nodejs modules.
 
 ![trymodule demo](preview.gif)
@@ -8,7 +10,7 @@ A simple cli tool for trying out different nodejs modules.
 
 - Support ES Module.
 
-- Built with ESM and typescript
+- Built with ESM and typescript.
 
 ## Installation
 
