@@ -1,6 +1,6 @@
 {
   "name": "@jopemachine/trymodule",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "It's never been easier to try nodejs modules!",
   "exports": "./dist/index.js",
   "maintainers": [
@@ -15,9 +15,6 @@
   "bin": {
     "trymodule": "./dist/cli.js"
   },
-  "files": [
-    "./dist/*"
-  ],
   "author": "Victor Bjelkholm <victorbjelkholm@gmail.com> (https://www.github.com/victorbjelkholm)",
   "repository": "https://github.com/jopemachine/trymodule",
   "license": "MIT",
@@ -28,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
+    "typescript": "^4.5.2",
     "xo": "^0.46.4"
   },
   "engines": {
