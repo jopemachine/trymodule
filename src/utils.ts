@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import isPromiseLike from 'is-promise';
 
 export function pathExistsSync(path: string) {
 	try {
@@ -8,3 +9,5 @@ export function pathExistsSync(path: string) {
 		return false;
 	}
 }
+
+export const isPromise = (object: PromiseLike<any>): object is Promise<any> => isPromiseLike(object) && (object as Promise<any>).catch !== undefined;

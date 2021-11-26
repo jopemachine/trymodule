@@ -22,7 +22,7 @@ const packageLocation = (pkg: string, installPath: string): string =>
 		pkg,
 	);
 
-const loadPackage = (moduleName: string, moduleAs: string, installPath: string): PromiseLike<PackageInfo> => new Promise(resolve => {
+const loadPackage = async (moduleName: string, moduleAs: string, installPath: string): Promise<PackageInfo> => new Promise(resolve => {
 	const pkgLocation = packageLocation(moduleName, installPath);
 
 	if (!pathExistsSync(pkgLocation)) {
@@ -60,7 +60,7 @@ const loadPackage = (moduleName: string, moduleAs: string, installPath: string):
 });
 
 export default async (packagesToInstall: Record<string, string>, installPath: string): Promise<PackageInfo[]> => new Promise((resolve, reject) => {
-	const promisesForInstallation: Array<PromiseLike<PackageInfo>> = [];
+	const promisesForInstallation: Array<Promise<PackageInfo>> = [];
 
 	for (const moduleName of Object.keys(packagesToInstall)) {
 		const as = packagesToInstall[moduleName];

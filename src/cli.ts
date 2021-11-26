@@ -7,6 +7,8 @@ import {exec} from 'node:child_process';
 import process from 'node:process';
 import chalk from 'chalk';
 import logSymbol from 'log-symbols';
+import isPromiseLike from 'is-promise';
+import {isPromise} from './utils.js';
 import replHistory from './repl-history.js';
 import loadPackages from './index.js';
 import type {PackageInfo} from './index.js';
@@ -81,17 +83,20 @@ if (hasFlag('--clear')) {
 
 					// Some libraries use non-native Promise implementations
 					// (ie lib$es6$promise$promise$$Promise)
-
-					if (result instanceof Promise || (typeof result === 'object' && typeof result.then === 'function')) {
+					if (isPromiseLike(result)) {
 						console.log(`${logSymbol.info} Returned a Promise. waiting for result...`);
 
-						result
-							.then((value: any) => {
+						if (isPromise(result)) {
+							result.then((value: any) => {
 								callback(null, value);
-							})
-							.catch((error: any) => {
+							}).catch((error: any) => {
 								callback(error, undefined);
 							});
+						} else {
+							void result.then((value: any) => {
+								callback(null, value);
+							});
+						}
 					} else {
 						callback(null, result);
 					}

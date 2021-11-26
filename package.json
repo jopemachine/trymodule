@@ -1,6 +1,6 @@
 {
   "name": "@jopemachine/trymodule",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "It's never been easier to try nodejs modules!",
   "exports": "./dist/index.js",
   "maintainers": [
@@ -21,6 +21,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "execa": "^6.0.0",
+    "is-promise": "^4.0.0",
     "log-symbols": "^5.0.0"
   },
   "devDependencies": {
