@@ -1,14 +1,21 @@
 ## trymodule
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)
 
 A simple cli tool for trying out different nodejs modules.
 
 ![trymodule demo](preview.gif)
 
+## Why?
+
+I'm not sure the original repository is being maintained, so I published this module by myself.
+
 - Works well with Node 16 and higher versions.
 
 - Support ES Module.
+
+- Support PromiseLike type.
 
 - Built with ESM and typescript.
 
