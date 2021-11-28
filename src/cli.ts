@@ -48,7 +48,7 @@ const logGreen = (message: string) => {
 const hasFlag = (flag: string) => flags.includes(flag);
 
 const addPackageToObject = (object: Record<string, any>, pkg: PackageInfo) => {
-	logGreen(`${logSymbol.info} Package '${pkg.name}' was loaded and assigned to '${pkg.as}' in the current scope`);
+	logGreen(`${logSymbol.info} Package '${pkg.name}@${pkg.version}' was loaded and assigned to '${pkg.as}' in the current scope`);
 	object[pkg.as] = pkg.package;
 	return object;
 };

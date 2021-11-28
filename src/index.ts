@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import path from 'node:path';
 import process from 'node:process';
+import fs from 'node:fs';
 import chalk from 'chalk';
-import {execaSync} from 'execa';
+import {execa} from 'execa';
 import logSymbol from 'log-symbols';
 import {pathExistsSync} from './utils.js';
 
@@ -10,6 +11,7 @@ export interface PackageInfo {
 	name: string;
 	as: string;
 	package: any;
+	version: string;
 }
 
 const exportedFileLocation = (packageLocation: string, exportedFile: string) =>
@@ -22,17 +24,50 @@ const packageLocation = (pkg: string, installPath: string): string =>
 		pkg,
 	);
 
-const loadPackage = async (moduleName: string, moduleAs: string, installPath: string): Promise<PackageInfo> => new Promise(resolve => {
+const isString = (arg: any): arg is string => typeof arg === 'string';
+
+const inferEntryScript = (pkgInfo: any): string => {
+	const {main, exports} = pkgInfo;
+
+	if (main && isString(main)) {
+		return main;
+	}
+
+	if (exports) {
+		if (isString(exports)) {
+			return exports;
+		}
+
+		if (exports[0] && isString(exports[0])) {
+			return exports[0];
+		}
+	}
+
+	return 'index.js';
+};
+
+const loadPackage = async (moduleName: string, moduleAs: string, installPath: string): Promise<PackageInfo> => new Promise(async resolve => {
 	const pkgLocation = packageLocation(moduleName, installPath);
 
+	let pkgInfo: any;
 	if (!pathExistsSync(pkgLocation)) {
 		console.log(chalk.yellow(`${logSymbol.info} Couldn't find '${moduleName}' locally, gonna download it now`));
 
-		const {stdout, stderr, failed, exitCode} = execaSync('npm', ['i', '--only=prod', '--prefix', installPath, moduleName], {
-			all: true,
-			stripFinalNewline: false,
-			reject: false,
-		});
+		const [installResult, viewResult] = await Promise.all([
+			execa('npm', ['i', '--only=prod', '--prefix', installPath, moduleName], {
+				all: true,
+				stripFinalNewline: false,
+				reject: false,
+			}),
+			execa('npm', ['v', '--json', moduleName], {
+				reject: false,
+			}),
+		]);
+
+		const {stdout, stderr, failed, exitCode} = installResult;
+		const {stdout: pkgInfoStdout} = viewResult;
+
+		pkgInfo = JSON.parse(pkgInfoStdout);
 
 		if (failed) {
 			console.error(chalk.red(`${logSymbol.error} Failed to install '${moduleName}'. Double check the module name is correct\n\n${stderr}`));
@@ -41,21 +76,16 @@ const loadPackage = async (moduleName: string, moduleAs: string, installPath: st
 
 		console.log(stdout);
 	} else {
+		pkgInfo = JSON.parse(fs.readFileSync(path.resolve(pkgLocation, 'package.json'), {encoding: 'utf-8'}));
 		console.log(chalk.blue(`${logSymbol.info} '${moduleName}' was already installed since before!`));
 	}
 
-	const {stdout} = execaSync('npm', ['v', '--json', moduleName], {
-		all: true,
-		stripFinalNewline: false,
-		reject: false,
-	});
+	const exports = inferEntryScript(pkgInfo);
 
-	const pkgInfo = JSON.parse(stdout);
-	const exports = pkgInfo.exports ?? pkgInfo.main ?? 'index.js';
 	const exportedFilePath = exportedFileLocation(pkgLocation, exports);
 
 	import(exportedFilePath).then(loadedPackage => {
-		resolve({name: moduleName, package: loadedPackage.default, as: moduleAs});
+		resolve({name: moduleName, package: loadedPackage.default, as: moduleAs, version: pkgInfo.version ?? 'unknown'});
 	}).catch(console.error);
 });
 

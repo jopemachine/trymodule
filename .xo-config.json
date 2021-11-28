@@ -8,6 +8,7 @@
     "@typescript-eslint/no-var-requires": "off",
     "unicorn/prefer-object-from-entries": "off",
     "no-negated-condition": "off",
-    "node/no-unsupported-features/es-syntax": "off"
+    "node/no-unsupported-features/es-syntax": "off",
+    "no-async-promise-executor": "off"
   }
 }
