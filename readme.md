@@ -11,7 +11,7 @@ A simple cli tool for trying out different nodejs modules.
 
 I'm not sure the original repository is being maintained, so I published this module by myself.
 
-- Works well with Node 16 and higher versions.
+- Works well with Node 16 (LTS) and higher versions.
 
 - Support ES Module.
 
