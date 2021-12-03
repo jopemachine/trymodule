@@ -8,6 +8,7 @@ import process from 'node:process';
 import chalk from 'chalk';
 import logSymbol from 'log-symbols';
 import isPromiseLike from 'is-promise';
+import reserved from './reserved.js';
 import {isPromise} from './utils.js';
 import replHistory from './repl-history.js';
 import loadPackages from './index.js';
@@ -48,8 +49,9 @@ const logGreen = (message: string) => {
 const hasFlag = (flag: string) => flags.includes(flag);
 
 const addPackageToObject = (object: Record<string, any>, pkg: PackageInfo) => {
-	logGreen(`${logSymbol.info} Package '${pkg.name}@${pkg.version}' was loaded and assigned to '${pkg.as}' in the current scope`);
-	object[pkg.as] = pkg.package;
+	const as = reserved.includes(pkg.as) ? `_${pkg.as}` : pkg.as;
+	logGreen(`${logSymbol.info} Package '${pkg.name}@${pkg.version}' was loaded and assigned to '${as}' in the current scope`);
+	object[as] = pkg.package;
 	return object;
 };
 

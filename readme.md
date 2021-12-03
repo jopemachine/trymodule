@@ -19,6 +19,8 @@ I'm not sure the original repository is being maintained, so I published this mo
 
 - Built with ESM and typescript.
 
+- Maintains the same behavior as the original module.
+
 ## Installation
 
 `npm install -g @jopemachine/trymodule`

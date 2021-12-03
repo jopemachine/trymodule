@@ -1,6 +1,6 @@
 {
   "name": "@jopemachine/trymodule",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "It's never been easier to try nodejs modules!",
   "exports": "./dist/index.js",
   "files": [
