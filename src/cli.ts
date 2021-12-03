@@ -79,7 +79,10 @@ if (hasFlag('--clear')) {
 				preview: true,
 				eval: (cmd: string, _context, _filename, callback) => {
 					const script = new vm.Script(cmd);
-					const result = script.runInContext(Object.assign(replServer.context, contextPackages));
+					const result = script.runInContext(Object.assign(replServer.context, contextPackages), {
+						displayErrors: false,
+						breakOnSigint: true,
+					});
 
 					// Some libraries use non-native Promise implementations
 					// (ie lib$es6$promise$promise$$Promise)
