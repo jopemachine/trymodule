@@ -85,8 +85,8 @@ const loadPackage = async (moduleName: string, moduleAs: string, installPath: st
 	const exportedFilePath = exportedFileLocation(pkgLocation, exports);
 
 	import(exportedFilePath).then(loadedPackage => {
-    const packageToLoad = (loadedPackage.default && Object.keys(loadedPackage).length === 1) ? 
-      loadedPackage.default : loadedPackage;
+		const packageToLoad = (loadedPackage.default && Object.keys(loadedPackage).length === 1)
+			? loadedPackage.default : loadedPackage;
 
 		resolve({name: moduleName, package: packageToLoad, as: moduleAs, version: pkgInfo.version ?? 'unknown'});
 	}).catch(console.error);
